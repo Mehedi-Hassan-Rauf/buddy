@@ -2,7 +2,7 @@ import React from "react";
 
 const ShareProblems = () => {
   return (
-    <div className="w-9/12 mr-5 flex flex-col gap-10">
+    <div className="w-9/12 mr-10 flex flex-col gap-10">
       <header className="flex flex-col gap-2 mt-5">
         <h1 className="text-4xl text-center">Share your problem freely!</h1>
         <h2 className="text-center">

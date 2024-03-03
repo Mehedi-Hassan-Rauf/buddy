@@ -1,11 +1,13 @@
+"use client";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const Sidebar = () => {
   return (
-    <nav className="flex flex-col justify-between fixed top-0 left-10 sm:w-2/12 h-screen">
+    <nav className="flex flex-col justify-between fixed top-0 left-10 w-full sm:w-2/12 h-screen">
       <div className="pt-4 flex gap-2 justify-center">
-        <h1>Questionnaire</h1>
+        <h1>Buddy</h1>
       </div>
       <div>
         <ul className="flex flex-col gap-4">
@@ -30,7 +32,14 @@ const Sidebar = () => {
         </ul>
       </div>
       <div className="py-4">
-        <button>Sign Out</button>
+        <button
+          className="bg-blue-500"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Sign Out
+        </button>
       </div>
     </nav>
   );

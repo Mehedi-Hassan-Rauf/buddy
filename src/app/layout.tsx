@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import { AuthProvider } from "@/lib/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,14 +16,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = true;
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} flex flex:col sm:flex-row relative justify-end`}
-        suppressHydrationWarning={true}
-      >
-        <Sidebar />
-        {children}
+      <body className={`${inter.className} `} suppressHydrationWarning={true}>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
