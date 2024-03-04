@@ -1,6 +1,8 @@
 "use client";
 import ProblemModal from "@/components/ProblemModal/ProblemModal";
-import React, { use, useState } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 const list1 = [
   { day: "01/05/2021", time: "12:16" },
@@ -17,9 +19,44 @@ const list1 = [
 
 const YourContributions = () => {
   const [isProblems, setIsProblems] = useState(true);
-  const [id, setId] = useState(-1);
+  const [problemList, setProblemList] = useState([]);
+  const [solutionList, setSolutionList] = useState([]);
+  const { data: session } = useSession();
+  const [id, setId] = useState({
+    name: "",
+    des: "",
+    _id: "",
+  });
+  useEffect(() => {
+    const userId = session?.user?.image;
+    const getProblems = async () => {
+      await axios
+        .get(`/api/get-problem/${userId}`)
+        .then((res) => {
+          setProblemList(res.data);
+          // console.log(res.data.createdAt);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    const getSolutions = async () => {
+      await axios
+        .get(`/api/get-solution/for-user/${userId}`)
+        .then((res) => {
+          setSolutionList(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getSolutions();
+    getProblems();
+  }, [session]);
+  // console.log(problemList[0]);
   return (
-    <div className="w-9/12 flex flex-col gap-20 mr-10">
+    <div className="w-11/12 px-5 sm:w-9/12 max-h-screen flex flex-col gap-20">
       <h1 className=" text-4xl text-center mt-5">Your Contributions</h1>
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <div className="w-full flex justify-start gap-2 ">
@@ -44,33 +81,49 @@ const YourContributions = () => {
             so far
           </h2>
           <ul className="w-full flex flex-col gap-5">
-            {isProblems ? (
-              list1.map((item, index) => {
-                return (
-                  <li
-                    key={index}
-                    className="flex items-center bg-gray-200 justify-around py-2"
-                  >
-                    <span>{index + 1})</span>
-                    <p className="text-sm">{item.day}</p>
-                    <p className="text-sm">{item.time}</p>
-                    <button
-                      className="bg-blue-500"
-                      onClick={() => {
-                        setId(index);
-                      }}
+            {isProblems
+              ? problemList.map(
+                  (item: { name: ""; des: ""; _id: "" }, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className="flex items-center bg-gray-200 justify-around py-2"
+                      >
+                        <span>{index + 1})</span>
+                        <p className=" w-1/3 text-sm truncate">{item.des}</p>
+                        <button
+                          className="bg-blue-500"
+                          onClick={() => {
+                            setId({
+                              name: item.name,
+                              des: item.des,
+                              _id: item._id,
+                            });
+                          }}
+                        >
+                          View
+                        </button>
+                        <hr />
+                      </li>
+                    );
+                  }
+                )
+              : solutionList.map((item: { solution: "" }, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className="flex items-center bg-gray-200 justify-around py-2"
                     >
-                      View
-                    </button>
-                    {/* <hr /> */}
-                  </li>
-                );
-              })
-            ) : (
-              <h1>Solutions</h1>
-            )}
+                      <span>{index + 1})</span>
+                      <p className=" w-1/3 text-sm truncate">You said : </p>
+                      <p className=" w-1/3 text-sm truncate">{item.solution}</p>
+
+                      <hr />
+                    </li>
+                  );
+                })}
           </ul>
-          {id >= 0 && <ProblemModal setId={setId} />}
+          {id.name !== "" && <ProblemModal id={id} setId={setId} />}
         </div>
       </div>
     </div>

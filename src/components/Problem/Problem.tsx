@@ -1,36 +1,42 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { FaMessage } from "react-icons/fa6";
+import { BiSolidMessageDetail } from "react-icons/bi";
+import { GoDotFill } from "react-icons/go";
 
 const Problem = ({
   index,
   name,
   des,
   setId,
+  _id,
 }: {
   index: number;
   name: string;
   des: string;
-  setId: Dispatch<SetStateAction<number>>;
+  setId: Dispatch<SetStateAction<{ name: string; des: string; _id: string }>>;
+  _id: string;
 }) => {
-  const winner = 0;
   return (
     <div
-      className={`w-fit h-fit flex flex-col p-2 gap-5 bg-white rounded-xl shadow-[0_0_60px_-15px_rgba(0,0,0,0.3)] text-lg font-semibold`}
+      className={`w-fit h-fit flex flex-col p-5 gap-3 bg-white rounded-xl shadow-[0_0_60px_-15px_rgba(0,0,0,0.3)] text-lg font-semibold`}
     >
-      <h1 className="">Name</h1>
-      <p className="text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis
-      </p>
-      <div className="w-full h-fit flex items-center justify-end gap-2">
-        <FaMessage
-          className="text-2xl cursor-pointer"
-          onClick={() => {
-            setId(index);
-          }}
-        />
+      <div className="w-full overflow-hidden h-fit flex  items-end justify-between gap-2">
+        <h1 className="">{name}</h1>
+        <div className="flex">
+          <BiSolidMessageDetail
+            className="text-2xl cursor-pointer text-blue-500"
+            onClick={() => {
+              const temp = {
+                name: name,
+                des: des,
+                _id: _id,
+              };
+              setId(temp);
+            }}
+          />
+          <GoDotFill className=" text-blue-500 ml-[-8px] mt-[-8px]" />
+        </div>
       </div>
+      <p className="text-sm font-normal">{des}</p>
     </div>
   );
 };

@@ -6,9 +6,9 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex:col sm:flex-row relative justify-end">
+    <div className="flex justify-evenly relative">
       <Sidebar />
-      {children}
+      <div className="w-screen flex justify-end">{children}</div>
     </div>
   );
 }

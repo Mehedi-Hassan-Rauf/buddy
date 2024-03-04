@@ -18,35 +18,47 @@ export const options: NextAuthOptions = {
         email: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         await connectDB();
         const { email, password } = credentials as {
           email: string;
           password: string;
         };
+        if (!email || !password) {
+          throw new Error("Fill all the fields");
+        }
         const user = await User.findOne({ email: email });
         try {
           if (user) {
             console.log("User Exists");
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
-              throw new Error("User does not exist");
+              throw new Error("Wrong password");
+              // return { error: "Wrong password" };
+            } else {
+              return user;
             }
+          } else {
+            throw new Error("No user with the given email");
           }
         } catch (error) {
           console.log(error);
         }
-        return user;
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
+      // return token;
       return { ...token, ...user };
     },
+
     async session({ session, token }) {
       session.user = token;
+      if (token.sub && session.user) {
+        session.user.image = token.sub;
+      }
       return session;
     },
   },

@@ -1,7 +1,10 @@
 "use client";
-import { signIn, useSession } from "next-auth/react";
+import axios from "axios";
+import { signIn } from "next-auth/react";
+import Error from "next/error";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -10,7 +13,6 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  const { data: session } = useSession();
   const router = useRouter();
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -19,28 +21,47 @@ const SignUp = () => {
     const email = inputs.email;
     const password = inputs.password;
 
-    try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+    if (isSignUp) {
+      try {
+        // const res = await signIn("credentials", {
+        //   email,
+        //   password,
+        // });
+        const response = await axios.post("/api/register", inputs);
+        toast.success("Successfully signed up!");
+        setIsSignUp(false);
+      } catch (e: any) {
+        // toast.error(error);
+        toast.error(e.response.data.error);
+      }
+    } else {
+      try {
+        const res = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
 
-      if (res?.error) {
-        console.log("Invalid Credentials");
+        if (res?.error === "CredentialsSignin") {
+          toast.error("Wrong email or password");
+          return;
+        } else if (res?.error && res?.error !== "CredentialsSignin") {
+          toast.error(res?.error);
+          return;
+        }
+      } catch (error) {
+        toast.error("Something went wrong try again");
         return;
       }
-
-      router.replace("/all-problems");
-    } catch (error) {
-      console.log(error);
+      toast.success("Sign In Successfully");
+      router.push("/all-problems");
     }
+    setInputs({
+      fullName: "",
+      email: "",
+      password: "",
+    });
   };
-
-  if (session) {
-    router.replace("/all-problems");
-    return null;
-  }
 
   return (
     <div className="w-full sm:w-2/5 h-full flex flex-col items-center justify-center gap-20 mx-auto">
@@ -57,6 +78,7 @@ const SignUp = () => {
             </label>
             <input
               type="text"
+              placeholder="Enter your full name"
               className="w-full input input-bordered px-2 h-10"
               value={inputs.fullName}
               onChange={(e) =>
@@ -72,6 +94,7 @@ const SignUp = () => {
           </label>
           <input
             type="text"
+            placeholder="Enter your email"
             className="w-full input input-bordered px-2 h-10"
             value={inputs.email}
             onChange={(e) => setInputs({ ...inputs, email: e.target.value })}

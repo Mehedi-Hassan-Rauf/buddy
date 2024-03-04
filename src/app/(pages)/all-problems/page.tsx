@@ -1,93 +1,50 @@
 "use client";
 import Problem from "@/components/Problem/Problem";
 import ProblemModal from "@/components/ProblemModal/ProblemModal";
-import React, { useState } from "react";
-import { FaCrown, FaPlus } from "react-icons/fa6";
-// import { MdArrowBackIos } from "react-icons/md";
-
-const list = [
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-  {
-    name: "Max",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        quisquam ipsa delectus, accusamus, cumque repellat quo itaque sunt
-        molestias perspiciatis`,
-  },
-];
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const AllProblems = () => {
-  const [id, setId] = useState(-1);
-  const winner = 0;
+  const [id, setId] = useState({
+    name: "",
+    des: "",
+    _id: "",
+  });
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    const getProblems = async () => {
+      await axios
+        .get("/api/get-problem")
+
+        .then((res) => {
+          setList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getProblems();
+  }, []);
   return (
-    <div className="w-9/12 mr-10 flex flex-col gap-20">
-      <h1 className="text-4xl text-center">Problems</h1>
-      <div className="grid grid-cols-4 gap-5">
-        {list.map((item, index) => {
-          return (
-            <Problem
-              key={index}
-              index={index}
-              setId={setId}
-              name={item.name}
-              des={item.des}
-            />
-          );
-        })}
+    <div className="w-11/12 sm:w-9/12 px-5 flex flex-col gap-20">
+      <h1 className="text-4xl text-center mt-5">Problems</h1>
+      <div className="flex flex-col gap-5 w-full h-full">
+        {list.map(
+          (item: { name: string; des: string; _id: string }, index: number) => {
+            return (
+              <Problem
+                key={index}
+                index={index}
+                setId={setId}
+                _id={item._id}
+                name={item.name}
+                des={item.des}
+              />
+            );
+          }
+        )}
       </div>
-      {id >= 0 && <ProblemModal setId={setId} />}
+      {id.name !== "" && <ProblemModal id={id} setId={setId} />}
     </div>
   );
 };

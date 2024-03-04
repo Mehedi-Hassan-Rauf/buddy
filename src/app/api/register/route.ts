@@ -1,9 +1,9 @@
 import User from "@/models/user";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import connectDB from "@/lib/db";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   connectDB();
   try {
     const body = await req.json();
@@ -13,8 +13,8 @@ export async function POST(req: Request) {
     //Confirm data exists
     if (!fullName || !email || !password) {
       return NextResponse.json(
-        { message: "All fields are required." },
-        { status: 400 }
+        { error: "All fields are required." },
+        { status: 401 }
       );
     }
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const duplicate = await User.findOne({ email }).lean().exec();
 
     if (duplicate) {
-      return NextResponse.json({ message: "Duplicate Email" }, { status: 409 });
+      return NextResponse.json({ error: "Duplicate Email" }, { status: 409 });
     }
     const hashPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
@@ -47,6 +47,6 @@ export async function POST(req: Request) {
     }
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ message: "Error", error }, { status: 500 });
+    return NextResponse.json({ error: "Error" }, { status: 500 });
   }
 }
