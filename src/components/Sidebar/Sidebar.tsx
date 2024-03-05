@@ -98,9 +98,9 @@ const Sidebar = () => {
               </li>
               <hr />
             </Link>
-            <Link href={"/ranking"}>
+            <Link href={"/all-contributions"}>
               <li className="text-2xl sm:text-lg text-center sm:text-start hover:bg-gray-700 py-3">
-                Ranking
+                All Contributions
               </li>
               <hr />
             </Link>
@@ -110,9 +110,9 @@ const Sidebar = () => {
               </li>
               <hr />
             </Link>
-            <Link href={"/your-contributions"}>
+            <Link href={"/your-history"}>
               <li className="text-2xl sm:text-lg text-center sm:text-start hover:bg-gray-700 py-3">
-                Your Contributions
+                Your History
               </li>
               <hr />
             </Link>

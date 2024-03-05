@@ -8,7 +8,9 @@ export async function GET(req: NextRequest, context: any) {
     const { params } = context;
     // console.log(params.id);
 
-    const problems = await Problem.findById(params.id);
+    const problems = await Problem.find({
+      userId: params.id,
+    });
 
     return NextResponse.json(problems, { status: 201 });
   } catch (error) {

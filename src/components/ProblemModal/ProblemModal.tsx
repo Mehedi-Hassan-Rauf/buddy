@@ -85,17 +85,29 @@ const ProblemModal = ({
           </button>
         </div>
         <div className="flex flex-col gap-4">
-          {msgs?.map((msg: { senderName: string; solution: string }, i) => {
-            return (
-              <div key={i}>
-                <div className="flex justify-between">
-                  <h3>{msg.senderName}</h3>
-                  <h5>16:21</h5>
+          {msgs?.map(
+            (
+              msg: { senderId: ""; senderName: string; solution: string },
+              i
+            ) => {
+              console.log(msg);
+              console.log(session?.user?.image);
+              return (
+                <div
+                  key={i}
+                  className={`${
+                    msg.senderId === session?.user?.image && "bg-gray-200"
+                  }`}
+                >
+                  <div className={`flex justify-between`}>
+                    <h3>{msg.senderName}</h3>
+                    <h5>16:21</h5>
+                  </div>
+                  <p className="text-base font-light">{msg.solution}</p>
                 </div>
-                <p className="text-base font-light">{msg.solution}</p>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
         </div>
       </div>
     </div>
