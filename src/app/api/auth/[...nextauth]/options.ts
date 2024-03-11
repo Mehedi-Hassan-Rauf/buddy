@@ -1,10 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/models/user";
 import bcrypt from "bcrypt";
-import { NextAuthOptions } from "next-auth";
+import { AuthOptions } from "next-auth";
 import connectDB from "@/lib/db";
 
-export const options: NextAuthOptions = {
+export const options: AuthOptions = {
   session: {
     strategy: "jwt",
   },
