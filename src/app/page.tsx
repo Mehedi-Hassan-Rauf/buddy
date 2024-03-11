@@ -20,7 +20,7 @@ const Home = () => {
           <p className="text-lg font-medium text-center">
             Have a lot of problems and tired of looking for perfect solution or
             advice. Well not to worry anymore, Buddy is here for you. You are
-            not alone in such situations. There's plenty of people like you
+            not alone in such situations. There&apos;s plenty of people like you
             using Buddy to connect and help out each other. Just sign up and get
             to post any kind of problems you are having, let others give you
             advice. Also you can be a part of giving solution to others problem.

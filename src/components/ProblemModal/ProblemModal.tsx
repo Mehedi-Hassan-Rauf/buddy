@@ -47,7 +47,7 @@ const ProblemModal = ({
         });
     };
     getSolutions();
-  }, [solution]);
+  });
   // console.log(msgs);
   return (
     <div

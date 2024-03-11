@@ -77,7 +77,7 @@ const UsersList = ({ user }: { user: { _id: string; fullName: string } }) => {
   useEffect(() => {
     getSolutions();
     getProblems();
-  }, []);
+  });
   return (
     <div className="w-full flex justify-around">
       <h1 className="w-1/3 text-center h-fit">{user.fullName}</h1>
