@@ -17,19 +17,27 @@ const AllProblems = () => {
   useEffect(() => {
     setLoading(true);
     const getProblems = async () => {
-      await axios
-        .get("/api/get-problem")
-
-        .then((res) => {
-          setList(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
+      // await axios
+      //   .get("/api/get-problem")
+      //   .then((res) => {
+      //     setList(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+      try {
+        const res = await fetch("/api/get-problem", {
+          cache: "no-cache",
         });
-      setLoading(false);
+        const data = await res.json();
+        setList(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getProblems();
-  }, [session]);
+  }, []);
   return (
     <div className="w-11/12 sm:w-9/12 px-5 flex flex-col gap-20">
       <h1 className="text-4xl text-center mt-5">Problems</h1>
