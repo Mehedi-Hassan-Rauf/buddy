@@ -27,9 +27,10 @@ const AllProblems = () => {
       //   });
       try {
         const res = await fetch("/api/get-all-problems", {
-          cache: "no-cache",
+          cache: "no-store",
         });
         const data = await res.json();
+        console.log(data);
         setList(data);
         setLoading(false);
       } catch (error) {
@@ -47,7 +48,7 @@ const AllProblems = () => {
             Loading....
           </h1>
         ) : (
-          list.map(
+          list?.map(
             (
               item: { name: string; des: string; _id: string },
               index: number
