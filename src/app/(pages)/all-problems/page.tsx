@@ -19,6 +19,7 @@ const AllProblems = () => {
         .get("/api/get-problem")
 
         .then((res) => {
+          console.log(res.data);
           setList(res.data);
         })
         .catch((err) => {
