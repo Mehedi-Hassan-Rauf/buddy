@@ -132,9 +132,9 @@ const YourContributions = () => {
                     await axios
                       .get(`/api/get-problem/${item.problemId}`)
                       .then((res) => {
-                        temp.name = res.data.name;
-                        temp.des = res.data.des;
-                        temp._id = res.data._id;
+                        temp.name = res?.data?.name;
+                        temp.des = res?.data?.des;
+                        temp._id = res?.data?._id;
                         // console.log(res.data._id);
                       })
                       .catch((err) => {

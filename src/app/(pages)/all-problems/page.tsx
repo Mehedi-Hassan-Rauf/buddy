@@ -26,7 +26,7 @@ const AllProblems = () => {
       //     console.log(err);
       //   });
       try {
-        const res = await fetch("/api/get-problem", {
+        const res = await fetch("/api/get-all-problems", {
           cache: "no-cache",
         });
         const data = await res.json();
