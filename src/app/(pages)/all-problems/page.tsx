@@ -2,9 +2,11 @@
 import Problem from "@/components/Problem/Problem";
 import ProblemModal from "@/components/ProblemModal/ProblemModal";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 const AllProblems = () => {
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState({
     name: "",
@@ -19,7 +21,6 @@ const AllProblems = () => {
         .get("/api/get-problem")
 
         .then((res) => {
-          console.log(res.data);
           setList(res.data);
         })
         .catch((err) => {
@@ -28,7 +29,7 @@ const AllProblems = () => {
       setLoading(false);
     };
     getProblems();
-  }, []);
+  }, [session]);
   return (
     <div className="w-11/12 sm:w-9/12 px-5 flex flex-col gap-20">
       <h1 className="text-4xl text-center mt-5">Problems</h1>
