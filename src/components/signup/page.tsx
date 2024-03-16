@@ -2,6 +2,7 @@
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Error from "next/error";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -65,10 +66,12 @@ const SignUp = () => {
 
   return (
     <div className="w-full sm:w-2/5 h-full flex flex-col items-center justify-center gap-20 mx-auto">
-      <h1 className="text-3xl font-semibold text-center text-gray-300">
-        {isSignUp ? "Sign Up" : "Log In"}{" "}
-        <span className="text-blue-500"> Buddy</span>
-      </h1>
+      <Link href={"/"}>
+        <h1 className="text-3xl font-semibold text-center text-gray-300">
+          {isSignUp ? "Sign Up" : "Log In"}{" "}
+          <span className="text-blue-500"> Buddy</span>
+        </h1>
+      </Link>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {isSignUp && (
